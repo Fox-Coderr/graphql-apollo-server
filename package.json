@@ -1,0 +1,25 @@
+{
+  "name": "graphql-apollo-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fox-Coderr/graphql-apollo-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fox-Coderr/graphql-apollo-server/issues"
+  },
+  "homepage": "https://github.com/Fox-Coderr/graphql-apollo-server#readme",
+  "dependencies": {
+    "apollo-server": "^2.6.4",
+    "apollo-server-express": "^2.6.4",
+    "express": "^4.17.1",
+    "graphql": "^14.3.1"
+  }
+}
