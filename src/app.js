@@ -1,8 +1,11 @@
 var express = require('express');
 var Apollo = require('apollo-server-express')
+var cors = require('cors')
 
 
 const app = express();
+
+app.use(cors());
 
 const schema = Apollo.gql`
   type Query {
