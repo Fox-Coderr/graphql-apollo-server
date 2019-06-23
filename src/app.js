@@ -1,3 +1,4 @@
+require('dotenv').config()
 var express = require('express');
 var apollo = require('apollo-server-express')
 var cors = require('cors')
@@ -21,6 +22,8 @@ const server = new apollo.ApolloServer({
 
 server.applyMiddleware({ app, path: '/graphql' });
 
-app.listen({ port: 8000 }, () => {
-  console.log('Apollo Server on http://localhost:8000/graphql');
+sequelize.sync().then(async () => {
+  app.listen({ port: 8000 }, () => {
+    console.log('Apollo Server on http://localhost:8000/graphql');
+  });
 });
