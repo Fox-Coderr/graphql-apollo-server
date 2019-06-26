@@ -1,22 +1,25 @@
+var models = require('../models/index')
 
 module.exports = {
     Query: {
-      users: (parent, args, { models }) => {
-        return Object.values(models.users);
+      users: async (parent, args, { models }) => {
+        return await models.models.User.findAll();
       },
-      user: (parent, { id }, { models }) => {
-        return models.users[id];
+      user: async (parent, { id }, { models }) => {
+        return await models.models.User.findByPk(id);
       },
-      me: (parent, args, { me }) => {
-        return me;
+      me: async (parent, args, { models, me }) => {
+        return await models.models.User.findByPk(me.id);
       },
     },
     
     User: {
-      messages: (user, args, { models }) => {
-        return Object.values(models.messages).filter(
-          message => message.userId === user.id,
-        );
+      messages: async (user, args, { models }) => {
+        return await models.models.Message.findAll({
+          where: {
+            userId: user.id,
+          },
+        });
       },
     },
 }
