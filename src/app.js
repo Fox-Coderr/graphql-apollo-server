@@ -29,6 +29,7 @@ const server = new apollo.ApolloServer({
   context: async () => ({
     models,
     me: await models.models.User.findByLogin('rwieruch'),
+    secret: process.env.SECRET,
   }),
 });
 
@@ -51,6 +52,8 @@ models.sequelize.sync().then(async () => {
     await models.models.User.create(
       {
         username: 'rwieruch',
+        email: 'hello@robin.com',
+        password: 'rwieruch',
         messages: [
           {
             text: 'Published the Road to learn React',
@@ -65,6 +68,8 @@ models.sequelize.sync().then(async () => {
     await models.models.User.create(
       {
         username: 'ddavids',
+        email: 'hello@david.com',
+        password: 'ddavids',
         messages: [
           {
             text: 'Happy to release ...',
