@@ -30,7 +30,6 @@ module.exports = {
       signUp: async (
         parent,
         { username, email, password },
-        { models },
         { models, secret }
       ) => {
         const user = await models.User.create({

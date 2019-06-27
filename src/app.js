@@ -1,7 +1,10 @@
 require('dotenv').config()
 var express = require('express');
 var apollo = require('apollo-server-express')
+var ApolloServer = apollo.ApolloServer
+var AuthenticationError = apollo.AuthenticationError
 var cors = require('cors')
+var jwt = require('jsonwebtoken')
 
 var schema = require('./schema/index')
 var resolvers = require('./resolvers/index')
@@ -9,9 +12,23 @@ var models = require('./models/index')
 
 const app = express();
 
+const getMe = async req => {
+  const token = req.headers['x-token'];
+
+  if (token) {
+    try {
+      return await jwt.verify(token, process.env.SECRET);
+    } catch (e) {
+      throw new AuthenticationError(
+        'Your session expired. Sign in again.',
+      );
+    }
+  }
+};
+
 app.use(cors());
 
-const server = new apollo.ApolloServer({
+const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
   formatError: error => {
@@ -26,11 +43,14 @@ const server = new apollo.ApolloServer({
       message,
     };
   },
-  context: async () => ({
-    models,
-    me: await models.models.User.findByLogin('rwieruch'),
-    secret: process.env.SECRET,
-  }),
+  context: async ({ req }) => {
+    const me = await getMe(req);
+    return {
+      models,
+      me,
+      secret: process.env.SECRET,
+    };
+  },
 });
 
 server.applyMiddleware({ app, path: '/graphql' });
