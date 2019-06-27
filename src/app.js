@@ -74,6 +74,7 @@ models.sequelize.sync().then(async () => {
         username: 'rwieruch',
         email: 'hello@robin.com',
         password: 'rwieruch',
+        role: 'ADMIN',
         messages: [
           {
             text: 'Published the Road to learn React',

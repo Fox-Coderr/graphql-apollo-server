@@ -14,6 +14,7 @@ module.exports = apollo.gql`
       password: String!
     ): Token!
     signIn(login: String!, password: String!): Token!
+    deleteUser(id: ID!): Boolean!
   }
 
   type Token {
@@ -24,7 +25,8 @@ module.exports = apollo.gql`
     id: ID!
     username: String!
     email: String!
-    messages: [Message!]
+    role: String
+    messages: [Message!]    
   }
 
 `;
