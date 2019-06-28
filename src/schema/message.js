@@ -2,7 +2,7 @@ var apollo = require('apollo-server-express');
 
 module.exports = apollo.gql`
   extend type Query {
-    messages: [Message!]!
+    messages(cursor: String, limit: Int): [Message!]!
     message(id: ID!): Message!
   }
 
