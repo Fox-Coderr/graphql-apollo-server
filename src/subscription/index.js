@@ -1,3 +1,10 @@
-var PubSub = require('apollo-server');
+var PubSub = require('apollo-server').PubSub;
+var MESSAGE_EVENTS = require('./message');
 
-export default new PubSub();
+const EVENTS = {
+  MESSAGE: MESSAGE_EVENTS,
+};
+
+const pubsub = new PubSub()
+
+module.exports = {pubsub, EVENTS}

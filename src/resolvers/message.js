@@ -1,7 +1,9 @@
 var combineResolvers = require('graphql-resolvers').combineResolvers;
-var isAuthenticated, isMessageOwner = require('./authorization');
+var isAuthenticated = require('./authorization').isAuthenticated;
+var isMessageOwner = require('./authorization').isMessageOwner;
 var Sequelize = require('sequelize');
-
+var pubsub = require('../subscription/index').pubsub;
+var EVENTS = require('../subscription/index').EVENTS;
 
 const toCursorHash = string => Buffer.from(string).toString('base64');
 
@@ -54,10 +56,16 @@ module.exports = {
       createMessage: combineResolvers(
         isAuthenticated,
         async (parent, { text }, { models, me }) => {
-          return await models.Message.create({
+          const message = await models.models.Message.create({
             text,
             userId: me.id,
           });
+
+          pubsub.publish(EVENTS.MESSAGE.CREATED, {
+            messageCreated: { message },
+          });
+  
+          return message;
         },
       ),
   
@@ -65,7 +73,7 @@ module.exports = {
         isAuthenticated,
         isMessageOwner,
         async (parent, { id }, { models }) => {
-          return await models.Message.destroy({ where: { id } });
+          return await models.models.Message.destroy({ where: { id } });
         },
       ),
     },
@@ -73,6 +81,12 @@ module.exports = {
     Message: {
       user: async (message, args, { models }) => {
         return await models.models.User.findByPk(message.userId);
+      },
+    },
+    
+    Subscription: {
+      messageCreated: {
+        subscribe: () => pubsub.asyncIterator(EVENTS.MESSAGE.CREATED),
       },
     },
   }
