@@ -3,6 +3,8 @@ var userSchema = require('./user');
 var messageSchema = require('./message');
 
 const linkSchema = apollo.gql`
+  scalar Date
+
   type Query {
     _: Boolean
   }

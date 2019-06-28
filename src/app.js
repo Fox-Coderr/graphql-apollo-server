@@ -60,7 +60,7 @@ models.sequelize.sync().then(async () => {
 
   models.sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
     if (eraseDatabaseOnSync) {
-      createUsersWithMessages();
+      createUsersWithMessages(new Date());
     }
 
     app.listen({ port: 8000 }, () => {
@@ -68,7 +68,7 @@ models.sequelize.sync().then(async () => {
     });
   });
 
-  const createUsersWithMessages = async () => {
+  const createUsersWithMessages = async date => {
     await models.models.User.create(
       {
         username: 'rwieruch',
@@ -78,6 +78,7 @@ models.sequelize.sync().then(async () => {
         messages: [
           {
             text: 'Published the Road to learn React',
+            createdAt: date.setSeconds(date.getSeconds() + 1),
           },
         ],
       },
@@ -94,9 +95,11 @@ models.sequelize.sync().then(async () => {
         messages: [
           {
             text: 'Happy to release ...',
+            createdAt: date.setSeconds(date.getSeconds() + 1),
           },
           {
             text: 'Published a complete ...',
+            createdAt: date.setSeconds(date.getSeconds() + 1),
           },
         ],
       },

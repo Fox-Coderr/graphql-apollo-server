@@ -48,7 +48,7 @@ module.exports = {
         { login, password },
         { models, secret },
       ) => {
-        const user = await models.User.findByLogin(login);
+        const user = await models.models.User.findByLogin(login);
   
         if (!user) {
           throw new UserInputError(
@@ -68,7 +68,7 @@ module.exports = {
       deleteUser: combineResolvers(
         isAdmin,
         async (parent, { id }, { models }) => {
-          return await models.User.destroy({
+          return await models.models.User.destroy({
             where: { id },
           });
         },
