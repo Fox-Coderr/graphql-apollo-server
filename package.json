@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test-server": "TEST_DATABASE=mytestdatabase npm start",
+    "test": "mocha --require @babel/register 'src/**/*.spec.js'"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   },
   "homepage": "https://github.com/Fox-Coderr/graphql-apollo-server#readme",
   "dependencies": {
+    "@babel/core": "^7.4.5",
     "apollo-server": "^2.6.4",
     "apollo-server-express": "^2.6.4",
     "bcrypt": "^3.0.6",
@@ -32,6 +34,10 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@babel/register": "^7.4.4",
+    "axios": "^0.19.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
     "nodemon": "^1.19.1"
   }
 }
