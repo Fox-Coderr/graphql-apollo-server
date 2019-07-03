@@ -6,14 +6,15 @@ var AuthenticationError = apollo.AuthenticationError
 var cors = require('cors')
 var jwt = require('jsonwebtoken')
 var http = require('http')
+var DataLoader = require('dataloader')
 
 var schema = require('./schema/index')
 var resolvers = require('./resolvers/index')
 var models = require('./models/index')
+var loaders = require('./loaders/index')
 
 const app = express();
 const httpServer = http.createServer(app);
-
 
 const getMe = async req => {
   const token = req.headers['x-token'];
@@ -50,6 +51,11 @@ const server = new ApolloServer({
     if (connection) {
       return {
         models,
+        loaders: {
+          user: new DataLoader(keys =>
+            loaders.user.batchUsers(keys, models),
+          ),
+        },
       };
     }
 
@@ -59,6 +65,11 @@ const server = new ApolloServer({
         models,
         me,
         secret: process.env.SECRET,
+        loaders: {
+          user: new DataLoader(keys =>
+            loaders.user.batchUsers(keys, models),
+          ),
+        },
       };
     }
   },
